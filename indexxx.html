@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>QuickBite | Food Ordering</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f4f4;
+            color: #333;
+        }
+
+        /* NAVBAR */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background: #ff6b35;
+            color: white;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* HERO */
+        .hero {
+            padding: 50px;
+            text-align: center;
+            background: #ffe7dc;
+        }
+
+        /* MENU */
+        .menu {
+            padding: 40px;
+        }
+
+        .cards {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: white;
+            width: 250px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .card h3 {
+            margin: 10px 0;
+        }
+
+        .card button {
+            padding: 8px 15px;
+            background: #ff6b35;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #222;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 40px;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            width: 300px;
+            text-align: center;
+        }
+
+        .modal-content input,
+        .modal-content select {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+        }
+
+        /* DARK MODE */
+        .dark {
+            background: #1e1e1e;
+            color: white;
+        }
+
+        .dark nav {
+            background: #333;
+        }
+
+        .dark .card {
+            background: #2c2c2c;
+        }
+
+        .dark footer {
+            background: black;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+        <h2>QuickBite</h2>
+        <ul>
+            <li>Home</li>
+            <li>Menu</li>
+            <li>Cart 🛒 <span id="cartCount">0</span></li>
+        </ul>
+        <div>
+            <button onclick="openLogin()">Login</button>
+            <button onclick="toggleDark()">🌙</button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <h1>Order Delicious Food Online</h1>
+        <p>Fast • Fresh • Affordable</p>
+    </section>
+
+    <!-- MENU -->
+    <section class="menu">
+        <h2 style="text-align:center;margin-bottom:20px;">Popular Items</h2>
+        <div class="cards">
+
+            <div class="card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Supreme_pizza.jpg" alt="Pizza">
+                <h3>Cheese Pizza</h3>
+                <p>₹249</p>
+                <button onclick="addToCart(249)">Add to Cart</button>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1550547660-d9450f859349" alt="Burger">
+                <h3>Burger</h3>
+                <p>₹199</p>
+                <button onclick="addToCart(199)">Add to Cart</button>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1525755662778-989d0524087e" alt="Pasta">
+                <h3>Pasta</h3>
+                <p>₹229</p>
+                <button onclick="addToCart(229)">Add to Cart</button>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80"
+                    alt="Sandwich">
+                <h3>Grilled Sandwich</h3>
+                <p>₹149</p>
+                <button onclick="addToCart(149)">Add to Cart</button>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=600&q=80"
+                    alt="Biryani">
+                <h3>Chicken Biryani</h3>
+                <p>₹299</p>
+                <button onclick="addToCart(299)">Add to Cart</button>
+            </div>
+
+           
+            
+
+
+
+
+
+
+        </div>
+    </section>
+
+    <!-- CHECKOUT -->
+    <div style="text-align:center;margin:20px;">
+        <button onclick="openPayment()" style="padding:10px 20px;font-size:16px;">
+            Checkout & Pay
+        </button>
+    </div>
+
+    <!-- PAYMENT MODAL -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content">
+            <h3>Payment</h3>
+            <p>Total Amount: ₹<span id="totalAmount">0</span></p>
+
+            <select id="paymentMethod">
+                <option value="">Select Payment Method</option>
+                <option>UPI</option>
+                <option>Debit Card</option>
+                <option>Cash on Delivery</option>
+            </select>
+
+            <button onclick="makePayment()">Pay Now</button>
+        </div>
+    </div>
+
+    <!-- LOGIN MODAL -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <h3>Login</h3>
+            <input type="text" id="username" placeholder="Username">
+            <input type="password" id="password" placeholder="Password">
+            <button onclick="login()">Login</button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 QuickBite Food Ordering System</p>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        let cart = 0;
+        let total = 0;
+
+        // ADD TO CART
+        function addToCart(price) {
+            cart++;
+            total += price;
+            document.getElementById("cartCount").innerText = cart;
+            alert("Item added to cart!");
+        }
+
+        // OPEN PAYMENT
+        function openPayment() {
+            if (cart === 0) {
+                alert("Cart is empty!");
+                return;
+            }
+            document.getElementById("totalAmount").innerText = total;
+            document.getElementById("paymentModal").style.display = "flex";
+        }
+
+        // MAKE PAYMENT
+        function makePayment() {
+            let method = document.getElementById("paymentMethod").value;
+            if (method === "") {
+                alert("Select payment method");
+                return;
+            }
+            alert("Payment Successful via " + method + " ✅");
+            cart = 0;
+            total = 0;
+            document.getElementById("cartCount").innerText = 0;
+            document.getElementById("paymentModal").style.display = "none";
+        }
+
+        // DARK MODE
+        function toggleDark() {
+            document.body.classList.toggle("dark");
+        }
+
+        // LOGIN
+        function openLogin() {
+            document.getElementById("loginModal").style.display = "flex";
+        }
+
+        function login() {
+            let user = document.getElementById("username").value.trim().toLowerCase();
+            let pass = document.getElementById("password").value.trim();
+
+            if (user === "admin" && pass === "1234") {
+                alert("Login Successful!");
+                document.getElementById("loginModal").style.display = "none";
+            } else {
+                alert("Invalid Credentials");
+            }
+        }
+    </script>
+
+</body>
+
+</html>
